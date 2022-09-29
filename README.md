@@ -3,17 +3,15 @@ Client Based of BeatSaber to Receive `!bsr` and Download Music and Store it (Sup
 
 NEED CONTACT DEVMARVEL FOR GAMETOKEN SINCE NOT SETUP ON DASHBOARD
 
-Need Nodejs Installed and Download this files
+TO USE THIS, [DOWNLOAD HERE Grab Latest](https://github.com/Babble-Bot-Organization/BeatSaber-SongRequest-Client/releases/latest)
 
-Edit config.json file and add your `userid` as `GAMETOKEN`
+# If using Steam
 
-# If using STEAM
-
-Make sure Set your Beat Saber Path in `pc_beatsaberpath` in `config.json`
+make sure Path BeatSaber in Settings and leave `Auto Upload to Quest Toggle` and `Quest Toggle` on `false`
 
 # If using Quest 1/2
 
-You need Install [SIDEQUEST](https://sidequestvr.com) and have `enable_automatic_upload_to_quest` on `true` and `toggle` on `true` in `config.json`
+You need Install [SIDEQUEST](https://sidequestvr.com) and have `Auto Upload to Quest Toggle` on `true` and `Quest Toggle` on `true` in Settings Page
 
 Command do it is `!bsr 1b898` You find that data from 1b898 in `https://bsaber.com/songs/1b898/`
 
@@ -25,4 +23,4 @@ and ModAssistant can Reload Songs in UI Options called `"Reload Playlists"`
 
 For Quest `"Beat Saber -> Settings -> Mod Settings -> SongLoader -> Reload New Song"`
 
-After that do `node index.js` then leave it running and use `BABBLEBOT` on Twitch/Trovo/Vimm/Theta
+After that Press `Start` in `Home` then leave it running and use `BABBLEBOT` on Twitch/Trovo/Vimm/Theta
