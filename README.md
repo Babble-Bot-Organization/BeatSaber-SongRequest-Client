@@ -1,7 +1,7 @@
 # BeatSaber-SongRequest-Client
 Client Based of BeatSaber to Receive `!bsr` and Download Music and Store it (Supports PC/Quest)
 
-NEED CONTACT DEVMARVEL FOR GAMETOKEN SINCE NOT SETUP ON DASHBOARD
+NEED CONTACT DEVMARVEL FOR GAMETOKEN SINCE NOT SETUP ON DASHBOARD [CONTACT US HERE](https://discord.gg/j8Td9bXzBj)
 
 TO USE THIS, [DOWNLOAD HERE Grab Latest](https://github.com/Babble-Bot-Organization/BeatSaber-SongRequest-Client/releases/latest)
 
