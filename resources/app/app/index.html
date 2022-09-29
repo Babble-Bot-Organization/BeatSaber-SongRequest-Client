@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>BeatSaber Client - BabbleChatBot Interactive</title>
+
+    <link href="../node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../node_modules/toastr/build/toastr.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet">
+    <link href="css/helpers.css" rel="stylesheet">
+    <link href="css/logs.css" rel="stylesheet">
+    <script>
+        window.jQuery = window.$ = module.exports
+    </script>
+</head>
+
+<body>
+    <div id="app" class="container" role="main">
+
+        <nav class="navbar navbar-expand-sm navbar-light rounded margin-top-10">
+            <a v-on:click="openExternal('https://babblebotchat.xyz/')" class="navbar-brand" href="javascript:;">
+                <img src="img/logo-header.png" class="d-inline-block align-top" alt="">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li v-bind:class="{ active: activeTab == 'bsr'}" class="nav-item">
+                        <a v-on:click="changeActiveTab('bsr')" class="nav-link" href="javascript:;">
+                            <i class="fa fa-globe"></i> Home
+                        </a>
+                    </li>
+                    <li v-bind:class="{ active: activeTab == 'logs'}" class="nav-item">
+                        <a v-on:click="changeActiveTab('logs')" class="nav-link" href="javascript:;">
+                            <i class="fa fa-list"></i> Logs
+                        </a>
+                    </li>
+                    <li v-bind:class="{ active: activeTab == 'settings'}" class="nav-item">
+                        <a v-on:click="changeActiveTab('settings')" class="nav-link" href="javascript:;">
+                            <i class="fa fa-cogs"></i> Settings
+                        </a>
+                    </li>
+                    <li>
+                        <div class="theme-switch-wrapper">
+                            <label class="theme-switch" for="checkbox">
+                            <input type="checkbox" id="checkbox" />
+                            <div class="slider round"></div>
+                      </label>
+                            <em>Enable Dark Mode!</em>
+                        </div>
+                    </li>
+            </div>
+        </nav>
+
+        <div v-if="activeTab === 'bsr'">
+            <button v-on:click="toggle" v-bind:class="toggleClass" type="button" class="btn btn-block margin-top-20">{{ toggleText }}</button>
+            <div class="alert alert-warning margin-top-20" role="alert">
+                <strong>Note:</strong> BeatSaber Client is running from BabbleChatBot on "Theta/Vimm/Twitch/Trovo", to use bot do `!bsr mapid` for twitch its `bsr mapid` since Prefix is broken at moment on BOT
+			</div>
+        </div>
+
+        <div v-show="activeTab === 'logs'" id="logs-box" class="margin-top-20">
+            <p v-for="entry in log">
+                {{ entry.date }} {{ entry.message }}
+            </p>
+        </div>
+
+        <div v-if="activeTab === 'settings'">
+            <form class="margin-top-20">
+                <div class="form-group">
+                    <label>Enter GameToken Here?</label>
+                    <input v-model="formSettings.userId" type="text" class="form-control" placeholder="Your GameToken Here">
+                    <small class="form-text text-muted">You can Get GameToken by Contact us on <a href="https://discord.gg/j8Td9bXzBj">Discord</a> </small>
+                </div>
+
+                <div class="form-group">
+                    <label>Path BeatSaber (For PCVR)?</label>
+                    <input v-model="formSettings.pc_beatsaberpath" type="text" class="form-control" placeholder="Your BeatSaber Path">
+                    <small class="form-text text-muted">EXAMPLE: </small>
+                </div>
+
+                <div class="form-group">
+                    <label>Quest Toggle?</label>
+                    <input v-model="formSettings.questtoggle" type="text" class="form-control" placeholder="Toggle if want Quest Enabled">
+                </div>
+
+                <div class="form-group">
+                    <label>Auto Upload to Quest Toggle?</label>
+                    <input v-model="formSettings.enable_automatic_upload_to_quest" type="text" class="form-control" placeholder="Toggle if want Automaticly Upload to Quest Enabled">
+                </div>
+
+                <div class="form-group margin-top-20">
+                    <button v-on:click="saveSettings" type="button" class="btn btn-primary btn-block">Save Settings</button>
+                </div>
+            </form>
+        </div>
+
+        <div v-if="update" class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabel">Update Available</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>You are running version <strong>{{ version }}</strong>, version <strong>{{ update.current_version }}</strong> is now available!</p>
+                        <p>Please note that your version will be deprecated soon and it might stop to work.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button v-on:click="openExternal(urls.web.EarnMining)" type="button" class="btn btn-primary">Download Update</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">Later</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="update && update.backward_compatible === false" class="overlay-incompatible">
+            <div class="overlay-content">
+                <p>You are running version <strong>{{ version }}</strong>. This version is not supported anymore.</p>
+                <p>Please download the latest version from the BabbleChatBot Github.</p>
+                <button v-on:click="openExternal(urls.web.EarnMining)" type="button" class="btn btn-primary margin-top-20">Download v{{ update.current_version }}</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../node_modules/vue/dist/vue.min.js"></script>
+
+    <script>
+        require('../renderer.js')
+    </script>
+
+    <script>
+        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.documentElement.setAttribute('data-theme', currentTheme);
+
+            if (currentTheme === 'dark') {
+                toggleSwitch.checked = true;
+            }
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        toggleSwitch.addEventListener('change', switchTheme, false);
+    </script>
+
+</body>
+
+</html>
