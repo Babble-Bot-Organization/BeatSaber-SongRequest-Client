@@ -74,7 +74,7 @@ var app = new Vue({
     el: '#app',
 
     data: {
-        url: 'https://api.chisdealhd.co.uk',
+        url: 'https://appws.babblebotchat.xyz',
         activeTab: 'bsr',
         log: [],
         running: null,
@@ -347,7 +347,7 @@ var app = new Vue({
                 this.getIpAddress();
             }
 
-            var wss = new WebSocket.Client('wss://apps.chisdealhd.co.uk/appws/');
+            var wss = new WebSocket.Client('wss://appws.babblebotchat.xyz/appws/beatsaber/');
 
             wss.on('open', function(message) {
                 self.logMessage('Connection established!');
@@ -487,7 +487,7 @@ var app = new Vue({
 			var self = this;
             return {
                 api: {
-                    CheckForUpdates: `${this.url}/v2/beatsaberclient/CheckForUpdates/`,
+                    CheckForUpdates: `${this.url}/v2/beatsaberclient/CheckForUpdates/?version=`,
                 },
                 web: {
                     EarnMining: `https://github.com/Babble-Bot-Organization/BeatSaber-SongRequest-Client/releases/`+self.version,
@@ -521,5 +521,3 @@ var app = new Vue({
     }
 
 });
-
-//rpc.login(ClientId).catch(console.error);
